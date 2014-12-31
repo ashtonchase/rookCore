@@ -3,7 +3,7 @@ package rookCore;
 /**
  * Created by ashton on 12/31/14.
  */
-public class HandClass implements CardHolderInterface{
+public class Hand implements CardHolderInterface{
 
 
     @Override

@@ -11,7 +11,7 @@ package rookCore;
  *
  * which cards that are used are not fixed, but there is a maximum.that is in a Rook deck, but this will be stored in the Deck Collection)
  */
-public class CardClass {
+public class Card {
 
     byte CardIndex;
 

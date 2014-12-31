@@ -1,5 +1,6 @@
 package rookCore;
 
+import javax.smartcardio.Card;
 import java.util.*;
 
 /**
@@ -7,16 +8,11 @@ import java.util.*;
  */
 public class DeckCollection implements CardHolderInterface{
 
-    DeckCollection(GameConfig G) {
+    Collection<Card> GameDeck;
+
+    public DeckCollection(GameConfig gameConfig) {
+
     }
-
-    public List<CardClass> getDeck() {
-        return Deck;
-    }
-
-
-
-    private List<CardClass> Deck = new ArrayList<CardClass>();
 
 
     @Override

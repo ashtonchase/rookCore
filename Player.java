@@ -3,12 +3,12 @@ package rookCore;
 /**
  * Created by ashton on 12/29/14.
  */
-public abstract class PlayerClass {
-    private HandClass hand;
+public class Player {
     public static Position position;
+    private Hand hand;
 
 
-    public PlayerClass() {
+    public Player() {
 
     }
 
@@ -16,7 +16,15 @@ public abstract class PlayerClass {
         this.position = position;
     }
 
-    protected void setHand(HandClass hand) {
+    protected void setHand(Hand hand) {
         this.hand = hand;
     }
+
+    public enum Position {
+        ONE,
+        TWO,
+        THREE,
+        FOUR;
+    }
+
 }

@@ -18,7 +18,7 @@ public class GameConfig {
     private boolean includeOnes;
     private boolean includeTwosThruFours;
     private boolean highTrumpOne;
-    private CardClass.CARD_COLOR highTrumpColor;
+    private Card.CARD_COLOR highTrumpColor;
     private boolean includeBlueRaven;
     private boolean playBlueRavenAnytime;
     private BLUE_RAVEN_RANK blueRavenRank;
@@ -35,7 +35,7 @@ public class GameConfig {
         includeOnes = true;
         includeTwosThruFours = false;
         highTrumpOne = false;
-        highTrumpColor = CardClass.CARD_COLOR.GREEN;
+        highTrumpColor = Card.CARD_COLOR.GREEN;
         includeBlueRaven = true;
         playBlueRavenAnytime = true;
         blueRavenRank = GameConfig.BLUE_RAVEN_RANK.HIGH;
@@ -49,13 +49,15 @@ public class GameConfig {
         bonusAllTricks = 0;
         bonusMostTricks = 0;
         winningScore = 300;
+
+
     }
 
 
 
 
 
-    public GameConfig(boolean includeOnes, boolean includeTwosThruFours, boolean highTrumpOne, CardClass.CARD_COLOR highTrumpColor, boolean includeBlueRaven, boolean playBlueRavenAnytime, BLUE_RAVEN_RANK blueRavenRank, short minimumBid, String nestName, boolean revealNestAfterBidding, boolean winningBidderLeads, boolean forceTrumpCantFollowSuit, boolean lastTrickWinnerTakesNest, short bonusAllPoints, short bonusAllTricks, short bonusMostTricks, short winningScore) {
+    public GameConfig(boolean includeOnes, boolean includeTwosThruFours, boolean highTrumpOne, Card.CARD_COLOR highTrumpColor, boolean includeBlueRaven, boolean playBlueRavenAnytime, BLUE_RAVEN_RANK blueRavenRank, short minimumBid, String nestName, boolean revealNestAfterBidding, boolean winningBidderLeads, boolean forceTrumpCantFollowSuit, boolean lastTrickWinnerTakesNest, short bonusAllPoints, short bonusAllTricks, short bonusMostTricks, short winningScore) {
         this.GameConfigError = GAME_CONFIG_ERROR_BITS.NO_ERROR.bit;
         this.includeOnes = includeOnes;
         this.includeTwosThruFours = includeTwosThruFours;
@@ -95,7 +97,7 @@ public class GameConfig {
         return highTrumpOne;
     }
 
-    public CardClass.CARD_COLOR getHighTrumpColor() {
+    public Card.CARD_COLOR getHighTrumpColor() {
         return highTrumpColor;
     }
 
