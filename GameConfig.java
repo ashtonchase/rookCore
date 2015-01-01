@@ -5,23 +5,23 @@ package rookCore;
  *
  * @TODO: Implement the checking of the error handling bits.
  * @TODO: Need to implement the upperBidLimit();
- *
+ * <p/>
  * Created by ashton on 12/31/14.
- *
+ * <p/>
  * This class will store all the game settings;
- *<p/>
- *  */
+ * <p/>
+ */
 public class GameConfig {
 
 
+    private Card.CARD_RANK blueRavenRank;
     int GameConfigError;
     private boolean includeOnes;
     private boolean includeTwosThruFours;
     private boolean highTrumpOne;
-    private Card.CARD_COLOR highTrumpColor;
+    private Card.CARD_COLOR highTrumpOneColor;
     private boolean includeBlueRaven;
     private boolean playBlueRavenAnytime;
-    private BLUE_RAVEN_RANK blueRavenRank;
     private short minimumBid;
     private String nestName;
     private boolean revealNestAfterBidding;
@@ -31,14 +31,14 @@ public class GameConfig {
     private short bonusAllPoints, bonusAllTricks, bonusMostTricks;
     private short winningScore;
 
-    public GameConfig(){
+    public GameConfig() {
         includeOnes = true;
         includeTwosThruFours = false;
         highTrumpOne = false;
-        highTrumpColor = Card.CARD_COLOR.GREEN;
+        highTrumpOneColor = Card.CARD_COLOR.GREEN;
         includeBlueRaven = true;
         playBlueRavenAnytime = true;
-        blueRavenRank = GameConfig.BLUE_RAVEN_RANK.HIGH;
+        blueRavenRank = Card.CARD_RANK.HIGHROOK;
         minimumBid = 100;
         nestName = "Widow";
         revealNestAfterBidding = false;
@@ -53,18 +53,14 @@ public class GameConfig {
 
     }
 
-
-
-
-
-    public GameConfig(boolean includeOnes, boolean includeTwosThruFours, boolean highTrumpOne, Card.CARD_COLOR highTrumpColor, boolean includeBlueRaven, boolean playBlueRavenAnytime, BLUE_RAVEN_RANK blueRavenRank, short minimumBid, String nestName, boolean revealNestAfterBidding, boolean winningBidderLeads, boolean forceTrumpCantFollowSuit, boolean lastTrickWinnerTakesNest, short bonusAllPoints, short bonusAllTricks, short bonusMostTricks, short winningScore) {
+    public GameConfig(boolean includeOnes, boolean includeTwosThruFours, boolean highTrumpOne, Card.CARD_COLOR highTrumpOneColor, boolean includeBlueRaven, boolean playBlueRavenAnytime, Card.CARD_RANK blueRavenRank, short minimumBid, String nestName, boolean revealNestAfterBidding, boolean winningBidderLeads, boolean forceTrumpCantFollowSuit, boolean lastTrickWinnerTakesNest, short bonusAllPoints, short bonusAllTricks, short bonusMostTricks, short winningScore) {
         this.GameConfigError = GAME_CONFIG_ERROR_BITS.NO_ERROR.bit;
         this.includeOnes = includeOnes;
         this.includeTwosThruFours = includeTwosThruFours;
         if (this.includeOnes) {
             if (highTrumpOne) {
                 this.highTrumpOne = highTrumpOne;
-                this.highTrumpColor = highTrumpColor;
+                this.highTrumpOneColor = highTrumpOneColor;
             }
         }
         this.includeBlueRaven = includeBlueRaven;
@@ -85,6 +81,10 @@ public class GameConfig {
 
     }
 
+    public Card.CARD_RANK getBlueRavenRank(){
+    return blueRavenRank;
+    }
+
     public boolean isIncludeOnes() {
         return includeOnes;
     }
@@ -97,8 +97,8 @@ public class GameConfig {
         return highTrumpOne;
     }
 
-    public Card.CARD_COLOR getHighTrumpColor() {
-        return highTrumpColor;
+    public Card.CARD_COLOR getHighTrumpOneColor() {
+        return highTrumpOneColor;
     }
 
     public boolean isIncludeBlueRaven() {
@@ -170,17 +170,6 @@ public class GameConfig {
         this.winningScore = winningScore;
     }
 
-  public enum BLUE_RAVEN_RANK {
-        LOW(0.0),
-        MID(10.5),
-        HIGH(20.0);
-        private final double rank;
-
-        BLUE_RAVEN_RANK(double rank) {
-            this.rank = rank;
-        }
-
-    }
 
     public enum GAME_CONFIG_ERROR_BITS {
         NO_ERROR(0),
