@@ -19,6 +19,7 @@ public class Card {
     public Card(CARD_COLOR cardColor, CARD_FACE cardFace, CARD_RANK cardRank) {
         if (cardColor == null || cardFace == null) throw new IllegalArgumentException("Parameters can't be null");
         if (cardFace == CARD_FACE.ROOK) {
+            this.cardFace=CARD_FACE.ROOK;
             this.cardColor = CARD_COLOR.ROOK;
             this.cardRank = cardRank;
             return;

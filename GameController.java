@@ -6,16 +6,33 @@ import java.util.Collection;
  * Created by ashton on 12/31/14.
  */
 public abstract class GameController {
-    GameConfig gameConfig;
-    GameState gameState;
-    DeckCollection deckCollection;
-    Collection<Player> gamePlayers;
+
+    public GameConfig gameConfig;
+    public GameState gameState;
+    public DeckCollection deckCollection;
+    public Player one,two,three, four;
+    public Team    teamOne,teamTwo;
 
 
-    public void GameControllerDefault() {
-        gameConfig=new GameConfig();
-        gameState=new GameState();
-        deckCollection=new DeckCollection(this.gameConfig);
+    protected void GameControllerDefault() {
+        this.gameConfig=new GameConfig();
+        this.gameState=new GameState();
+        this.deckCollection=new DeckCollection(gameConfig);
         //TODO: Create game players.
+
     }
+
+
+    protected abstract void setGameConfig();
+
+    protected abstract void storeGameState();
+
+    protected abstract void storeGameConfig();
+
+    protected abstract void assignPlayersToTeam();
+
+    protected abstract boolean createPlayerConnection();
+
+
+
 }
