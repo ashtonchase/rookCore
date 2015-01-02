@@ -12,7 +12,7 @@ import java.util.Map;
  */
 public interface CardHolderInterface {
 
-     List<Card> viewCards();
+     void viewCards();
 
      void releaseCardOut(byte CardIndex);
 

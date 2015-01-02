@@ -6,9 +6,12 @@ package rookCore;
 public class Player {
     public static Position position;
     private Hand hand;
+    public String name;
 
 
-    public Player() {
+    public Player(String name) {
+
+        this.name = name;
 
     }
 

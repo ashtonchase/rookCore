@@ -72,8 +72,8 @@ public class DeckCollection implements CardHolderInterface {
 
 
     @Override
-    public ArrayList<Card> viewCards() {
-        return d;
+    public void viewCards() {
+        //do not run anything here, you can't look at the deck.
     }
 
     @Override

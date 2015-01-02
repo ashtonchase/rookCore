@@ -10,18 +10,37 @@ public abstract class GameController {
     public GameConfig gameConfig;
     public GameState gameState;
     public DeckCollection deckCollection;
-    public Player one,two,three, four;
-    public Team    teamOne,teamTwo;
+    public Player[] players;
+    public Team[]    team;
 
 
-    protected void GameControllerDefault() {
+    protected void gameControllerDefault() {
         this.gameConfig=new GameConfig();
         this.gameState=new GameState();
         this.deckCollection=new DeckCollection(gameConfig);
+        this.players=new Player[4];
+        this.team=new Team[2];
+
+        startGame();
         //TODO: Create game players.
 
     }
 
+    private void startGame() {
+        for (int i = 0; i < players.length; i++) {
+
+            createPlayerConnection(players[i]);
+        }
+        getPlayerNames();
+        assignTeams();
+
+
+        notifyGameExit();
+    }
+
+    protected abstract void notifyGameExit();
+
+    protected abstract void assignTeams();
 
     protected abstract void setGameConfig();
 
@@ -29,10 +48,9 @@ public abstract class GameController {
 
     protected abstract void storeGameConfig();
 
-    protected abstract void assignPlayersToTeam();
+    protected abstract boolean createPlayerConnection(Player p);
 
-    protected abstract boolean createPlayerConnection();
-
+    protected abstract void getPlayerNames();
 
 
 }

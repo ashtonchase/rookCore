@@ -31,6 +31,7 @@ public class GameConfig {
     private short bonusAllPoints, bonusAllTricks, bonusMostTricks;
     private short winningScore;
 
+
     public GameConfig() {
         includeOnes = true;
         includeTwosThruFours = false;
@@ -51,7 +52,10 @@ public class GameConfig {
         winningScore = 300;
 
 
+
+
     }
+
 
     public GameConfig(boolean includeOnes, boolean includeTwosThruFours, boolean highTrumpOne, Card.CARD_COLOR highTrumpOneColor, boolean includeBlueRaven, boolean playBlueRavenAnytime, Card.CARD_RANK blueRavenRank, short minimumBid, String nestName, boolean revealNestAfterBidding, boolean winningBidderLeads, boolean forceTrumpCantFollowSuit, boolean lastTrickWinnerTakesNest, short bonusAllPoints, short bonusAllTricks, short bonusMostTricks, short winningScore) {
         this.GameConfigError = GAME_CONFIG_ERROR_BITS.NO_ERROR.bit;
