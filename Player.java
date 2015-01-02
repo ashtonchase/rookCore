@@ -10,9 +10,12 @@ public class Player {
 
 
     public Player(String name) {
-
         this.name = name;
+    }
 
+    public Player() {
+        this.name="dummy";
+        this.hand=new Hand();
     }
 
     protected void setPosition(Position position) {
@@ -21,6 +24,10 @@ public class Player {
 
     protected void setHand(Hand hand) {
         this.hand = hand;
+    }
+
+    protected void addCard(Card c){
+        this.hand.addCard(c);
     }
 
     public enum Position {

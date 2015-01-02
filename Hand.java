@@ -9,13 +9,22 @@ import java.util.Map;
 public class Hand implements CardHolderInterface{
     ArrayList<Card> d;
 
-    @Override
-    public ArrayList<Card> viewCards() {
-        return d;
+    public Hand() {
+        this.d=new ArrayList<Card>(8);
     }
 
     @Override
-    public void releaseCardOut(byte CardIndex) {
+    public void viewCards() {
 
+    }
+
+    @Override
+    public void addCard(Card c){
+        this.d.add(c);
+
+    }
+    @Override
+    public Card releaseCardOut(int CardIndex) {
+    return this.d.remove(CardIndex);
     }
 }

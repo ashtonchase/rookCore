@@ -4,7 +4,7 @@ package rookCore;
  * Created by ashton on 12/31/14.
  */
 public class Team {
-    private int score;
+    private short score;
     Player playerOne, playerTwo;
 
 
@@ -15,11 +15,16 @@ public class Team {
 
     }
 
-    public int getScore() {
+    public short getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(short score) {
         this.score = score;
+    }
+
+    public String getPlayerNames (){
+        String s=playerOne.name+" & "+playerTwo.name;
+        return s;
     }
 }

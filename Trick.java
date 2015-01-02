@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Created by ashton on 1/1/15.
  */
-public class Trick  implements CardHolderInterface{
+public class Trick  {
     Card[] cardArray;
     Player[] players;
     byte arrayIndex;
@@ -31,14 +31,4 @@ public class Trick  implements CardHolderInterface{
 
 
 
-
-    @Override
-    public void viewCards() {
-        return;
-    }
-
-    @Override
-    public void releaseCardOut(byte CardIndex) {
-
-    }
 }
