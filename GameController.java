@@ -26,7 +26,7 @@ public abstract class GameController implements Runnable {
         }
         this.team = new Team[2];
         this.widow = new Widow();
-
+        gameConfig.setNumberOfRounds((short) deck.getDeckSize());
         startGame();
         //TODO: Create game players.
 
@@ -49,7 +49,12 @@ public abstract class GameController implements Runnable {
         do {//play hands until either team has enough points to win.
 
             initiateBidding();
-            playTrick();
+            for (short i = 0; i < gameConfig.getNumberOfRounds(); i++) {
+                playTrick();
+            }
+
+
+
 
         }
         while ((team[0].getScore() <= gameConfig.getWinningScore()) && (team[1].getScore() <= gameConfig.getWinningScore()));
@@ -90,12 +95,13 @@ public abstract class GameController implements Runnable {
                 gameState.setWinningBidder(tempBidders.remove(0));
                 tempBidders.clear();
                 break;
-            }else tempBid+=5;
+            }
 
 
         } while (true);
         gameState.getWinningBidder().addWidow(widow.releaseWidow());
         widow.clearWidow();
+        System.out.println(gameState.getWinningBidder().getName() + " Won the bid!");
 
     }
 
@@ -105,7 +111,6 @@ public abstract class GameController implements Runnable {
         for (int i = 1; i <= 5; i++) {
             widow.addCard(deck.releaseCardOut(0));
         }
-
 
         while (!deck.isEmpty()) {
             players.get(0).addCard(deck.releaseCardOut(0));

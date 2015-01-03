@@ -8,6 +8,11 @@ import java.util.*;
 public class Deck implements CardHolderInterface {
     private ArrayList<Card> d;
 
+    public short getDeckSize() {
+        return deckSize;
+    }
+
+    private short deckSize;
     public Deck(GameConfig gameConfig) {
         d = new ArrayList<Card>(20);
         this.buildDeck(gameConfig);
@@ -68,8 +73,8 @@ public class Deck implements CardHolderInterface {
             addCard(new Card(c, Card.CARD_FACE.THIRTEEN, Card.CARD_RANK.THIRTEEN));
             addCard(new Card(c, Card.CARD_FACE.FOURTEEN, Card.CARD_RANK.FOURTEEN));
         }
-        System.out.println("Created Card");
-
+        System.out.println("Deck Created");
+        deckSize = (short) d.size();
 
         //build the standard cards in ever deck first
 

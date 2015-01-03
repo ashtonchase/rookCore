@@ -125,17 +125,26 @@ public class CommandLineGameController extends GameController implements PlayerC
     protected void playTrick() {
         LinkedList<Player> playerList = new LinkedList<Player>();
         playerList.add(gameState.getLeadNextTrick());
+        Iterator iterator = super.players.iterator();
+        int j = super.players.indexOf(gameState.getLeadNextTrick()) + 1;
+        for (int i = 0; i < 3; i++, j++) {
+            if (j > 3)
+                j = 0;
+            playerList.add(super.players.get(j));
 
-        playerList.addAll(super.players);
+        }
+
+
 
         Card.CARD_COLOR playedColor;
+        ArrayList<Card> cardsOfTrick = new ArrayList<Card>(4);
+        for (Player p : playerList) {
+            cardsOfTrick.add(requestCardPlay(p));
 
-        for (Player p : super.players) {
-            Card playedCard = requestCardPlay(p);
-            if (p.equals(super.players.get(0))) playedColor = playedCard.getCardColor();
-            //playedCard.put(playedCard);
-            postCard(p, playedCard);
-            //determine winner and post points;
+            if (p.equals(playerList.get(0))) {
+            }
+            postCard(p, cardsOfTrick.get(cardsOfTrick.size() - 1));
+            //TODO:determine winner and post points;
         }
 
     }
@@ -170,7 +179,7 @@ public class CommandLineGameController extends GameController implements PlayerC
     @Override
     protected void pollBids(ArrayList<Player> tempBidders) {
         for (int i = 0; i < tempBidders.size(); i++) {
-
+            if (tempBidders.size() == 1) break;
             tempBidders.get(i).setCurrentBid(requestBid(tempBidders.get(i)));
             if (tempBidders.get(i).isPassBid()) {
                 tempBidders.remove(i);
@@ -204,6 +213,7 @@ public class CommandLineGameController extends GameController implements PlayerC
             System.out.println("ERROR: You must bit at least " + super.tempBid + " or higher. Bid again.");
             requestBid(p);
         }
+        tempBid = Integer.parseInt(input);
         return Integer.parseInt(input);
 
     }

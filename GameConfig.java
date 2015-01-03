@@ -31,6 +31,16 @@ public class GameConfig {
     private short bonusAllPoints, bonusAllTricks, bonusMostTricks;
     private short winningScore;
 
+    public short getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public void setNumberOfRounds(short numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
+    }
+
+    private short numberOfRounds;
+
 
     public GameConfig() {
         includeOnes = true;
