@@ -17,8 +17,12 @@ public class Deck implements CardHolderInterface {
 
     public int length() {
         return d.size();
+
     }
 
+    public boolean isEmpty(){
+        return d.isEmpty();
+    }
     protected void shuffleDeck() {
         Collections.shuffle(d);
     }

@@ -55,6 +55,11 @@ public class Card {
         this.cardRank = cardRank;
     }
 
+    @Override
+    public String toString() {
+        return cardColor.toString()+" "+cardFace.toString();
+    }
+
 
     public enum CARD_COLOR {ROOK("O"), BLACK("B"), GREEN("G"), RED("R"), YELLOW("Y");
         private final String abbrev;

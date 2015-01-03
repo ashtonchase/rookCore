@@ -17,6 +17,9 @@ public class Hand implements CardHolderInterface{
     public void viewCards() {
 
     }
+    public ArrayList<Card> getCards(){
+        return d;
+    }
 
     @Override
     public void addCard(Card c){
@@ -26,5 +29,10 @@ public class Hand implements CardHolderInterface{
     @Override
     public Card releaseCardOut(int CardIndex) {
     return this.d.remove(CardIndex);
+    }
+
+    public void addCards(ArrayList<Card> cards) {
+        d.addAll(cards);
+
     }
 }

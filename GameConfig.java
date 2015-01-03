@@ -22,7 +22,7 @@ public class GameConfig {
     private Card.CARD_COLOR highTrumpOneColor;
     private boolean includeBlueRaven;
     private boolean playBlueRavenAnytime;
-    private short minimumBid;
+    private int minimumBid;
     private String nestName;
     private boolean revealNestAfterBidding;
     private boolean winningBidderLeads;
@@ -40,7 +40,7 @@ public class GameConfig {
         includeBlueRaven = true;
         playBlueRavenAnytime = true;
         blueRavenRank = Card.CARD_RANK.HIGHROOK;
-        minimumBid = 100;
+        this.minimumBid = 100;
         nestName = "Widow";
         revealNestAfterBidding = false;
         winningBidderLeads = true;
@@ -113,16 +113,15 @@ public class GameConfig {
         return playBlueRavenAnytime;
     }
 
-    public short getMinimumBid() {
-        return minimumBid;
+    public int getMinimumBid() {
+        return this.minimumBid;
     }
 
     private void setMinimumBid(short minimumBid) {
-        short requiredMinBid = 0;
 
-        if (requiredMinBid > minimumBid) {
+        if (this.minimumBid > minimumBid) {
             this.GameConfigError += GAME_CONFIG_ERROR_BITS.MIN_BID_ERROR.bit;
-            this.minimumBid = requiredMinBid;
+            this.minimumBid = minimumBid;
             return;
         }
         this.minimumBid = minimumBid;

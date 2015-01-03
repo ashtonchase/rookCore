@@ -6,12 +6,11 @@ package rookCore;
 public interface PlayerClientInterface {
     public void getCards();
 
-
     public void playCard(int cardNumber);
 
     public void displayCards();
 
-    public void bid(short bidAmount);
+    public void getBidFromPlayer(Player p);
 
 
 

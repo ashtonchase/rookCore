@@ -1,6 +1,8 @@
 package rookCore;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 /**
  * Created by ashton on 1/1/15.
@@ -12,6 +14,16 @@ ArrayList<Card> cards;
         cards=new ArrayList<Card>(5);
     }
 
+    public void clearWidow(){
+        cards.clear();
+
+    }
+
+
+    public ArrayList<Card> releaseWidow(){
+        return cards;
+
+    }
     @Override
     public void viewCards() {
 
