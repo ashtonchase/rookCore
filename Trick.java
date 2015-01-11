@@ -8,27 +8,26 @@ import java.util.Map;
 /**
  * Created by ashton on 1/1/15.
  */
-public class Trick  {
+public class Trick {
     Card[] cardArray;
     Player[] players;
     byte arrayIndex;
 
     public Trick(Player[] players) {
-        cardArray=new Card[4];
-        arrayIndex=0;
+        cardArray = new Card[4];
+        arrayIndex = 0;
 
     }
 
-    public void PlaceCardOnTable(Card card, Player playingPlayer){
+    public void PlaceCardOnTable(Card card, Player playingPlayer) {
         for (int i = 0; i < cardArray.length; i++) {
-            if(playingPlayer==players[i]){
-                cardArray[i]=card;
+            if (playingPlayer == players[i]) {
+                cardArray[i] = card;
             }
 
         }
 
     }
-
 
 
 }

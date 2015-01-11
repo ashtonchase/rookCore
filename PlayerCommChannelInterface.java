@@ -9,15 +9,12 @@ public interface PlayerCommChannelInterface {
 
     public void AttachInterface();
 
-    public int requestBid(Player p);
 
     public boolean playerSignalledPass(Player p);
 
     public boolean playedSignalledCheck(Player p);
 
     public Card requestCardPlay(Player p);
-
-
 
 
 }

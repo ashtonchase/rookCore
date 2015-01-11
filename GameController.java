@@ -44,16 +44,17 @@ public abstract class GameController implements Runnable {
         }
         gameState.setStartingBidder(players.get(0));
         getPlayerNames();
+        System.out.flush();
         assignTeams();
+        System.out.flush();
         dealCards();
         do {//play hands until either team has enough points to win.
 
             initiateBidding();
+            System.out.flush();
             for (short i = 0; i < gameConfig.getNumberOfRounds(); i++) {
                 playTrick();
             }
-
-
 
 
         }
@@ -61,20 +62,6 @@ public abstract class GameController implements Runnable {
         if (team[0].getScore() > team[1].getScore())
             gameState.setWinningTeam(team[0]);
         else gameState.setWinningTeam(team[1]);
-
-
-
-
-
-
-/*
-        try {
-            Thread.sleep(20 * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-*/
-
 
         System.out.println("Stopping Server");
         // server.stop();
@@ -90,22 +77,52 @@ public abstract class GameController implements Runnable {
 
         tempBid = gameConfig.getMinimumBid();
         do {
+            tempBidders.get(0).setCheckable(true);
             pollBids(tempBidders);
-            if (tempBidders.size()==1){
+            if (tempBidders.size() == 1) {
                 gameState.setWinningBidder(tempBidders.remove(0));
                 tempBidders.clear();
                 break;
             }
-
-
         } while (true);
+
         gameState.getWinningBidder().addWidow(widow.releaseWidow());
         widow.clearWidow();
         System.out.println(gameState.getWinningBidder().getName() + " Won the bid!");
+        requestTrump(gameState.getWinningBidder(), gameState.trumps);
+        reloadWidow(gameState.getWinningBidder());
+
 
     }
 
-    protected abstract void pollBids(ArrayList<Player> tempBidders);
+    protected abstract void reloadWidow(Player p);
+
+    protected abstract void requestTrump(Player p, Card.CARD_COLOR trumpColor);
+
+    //protected abstract void pollBids(ArrayList<Player> tempBidders);
+    //@Override
+    protected void pollBids(ArrayList<Player> tempBidders) {
+        for (int i = 0; i < tempBidders.size(); i++) {
+            if (tempBidders.size() == 1) break;
+            tempBidders.get(i).setCurrentBid(requestBid(tempBidders.get(i)));
+            postBidUpdate();
+            if (tempBidders.get(i).isPassBid()) {
+                //    tempBidders.get(i+1).setCheckable(true);
+                tempBidders.remove(i);
+                i--;
+
+            } else if (tempBidders.get(i).isCheck()) {
+                //    tempBidders.get(i+1).setCheckable(false);
+            } else if (tempBidders.get(i).getCurrentBid() >= tempBid)
+                tempBid = tempBidders.get(i).getCurrentBid() + 5;
+
+
+        }
+    }
+
+    protected abstract void postBidUpdate();
+
+    public abstract int requestBid(Player p);
 
     private void dealCards() {
         for (int i = 1; i <= 5; i++) {

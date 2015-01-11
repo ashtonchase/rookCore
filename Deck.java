@@ -7,12 +7,8 @@ import java.util.*;
  */
 public class Deck implements CardHolderInterface {
     private ArrayList<Card> d;
-
-    public short getDeckSize() {
-        return deckSize;
-    }
-
     private short deckSize;
+
     public Deck(GameConfig gameConfig) {
         d = new ArrayList<Card>(20);
         this.buildDeck(gameConfig);
@@ -20,14 +16,19 @@ public class Deck implements CardHolderInterface {
 
     }
 
+    public short getDeckSize() {
+        return deckSize;
+    }
+
     public int length() {
         return d.size();
 
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return d.isEmpty();
     }
+
     protected void shuffleDeck() {
         Collections.shuffle(d);
     }

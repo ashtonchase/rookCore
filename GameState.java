@@ -9,8 +9,9 @@ public class GameState {
     Player WinningBidder;
     Player StartingBidder;
     Player leadNextTrick;
-    private Card.CARD_COLOR trumps;
+    Card.CARD_COLOR trumps;
     private Team winningTeam;
+
     public GameState() {
         startingBidder = 0;
 
@@ -47,7 +48,7 @@ public class GameState {
 
     public void setWinningBidder(Player winningBidder) {
         WinningBidder = winningBidder;
-        leadNextTrick=winningBidder;
+        leadNextTrick = winningBidder;
     }
 
     protected Team getWinningTeam() {

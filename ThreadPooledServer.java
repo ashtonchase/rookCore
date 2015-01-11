@@ -10,32 +10,32 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ThreadPooledServer implements Runnable{
+public class ThreadPooledServer implements Runnable {
 
-    protected int          serverPort   = 5066;
+    protected int serverPort = 5066;
     protected ServerSocket serverSocket = null;
-    protected boolean      isStopped    = false;
-    protected Thread       runningThread= null;
+    protected boolean isStopped = false;
+    protected Thread runningThread = null;
     protected ExecutorService threadPool =
             Executors.newFixedThreadPool(4);
 
-    public ThreadPooledServer(int port){
+    public ThreadPooledServer(int port) {
         this.serverPort = port;
     }
 
-    public void run(){
-        synchronized(this){
+    public void run() {
+        synchronized (this) {
             this.runningThread = Thread.currentThread();
         }
         openServerSocket();
-        while(! isStopped()){
+        while (!isStopped()) {
             Socket clientSocket = null;
             try {
                 System.out.println("Waiting for connections:");
                 clientSocket = this.serverSocket.accept();
             } catch (IOException e) {
-                if(isStopped()) {
-                    System.out.println("Server Stopped.") ;
+                if (isStopped()) {
+                    System.out.println("Server Stopped.");
                     break;
                 }
                 throw new RuntimeException(
@@ -46,7 +46,7 @@ public class ThreadPooledServer implements Runnable{
                             "Thread Pooled Server"));
         }
         this.threadPool.shutdown();
-        System.out.println("Server Stopped.") ;
+        System.out.println("Server Stopped.");
     }
 
 
@@ -54,7 +54,7 @@ public class ThreadPooledServer implements Runnable{
         return this.isStopped;
     }
 
-    public synchronized void stop(){
+    public synchronized void stop() {
         this.isStopped = true;
         try {
             this.serverSocket.close();

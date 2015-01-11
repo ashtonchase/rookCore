@@ -13,5 +13,4 @@ public interface PlayerClientInterface {
     public void getBidFromPlayer(Player p);
 
 
-
 }

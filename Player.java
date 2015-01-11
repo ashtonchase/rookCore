@@ -9,7 +9,37 @@ public class Player {
     public static Position position;
     public String name;
     protected Hand hand;
+    boolean passBid;
+    boolean check;
+    private boolean checkable;
     private int currentBid;
+
+    public Player(String name) {
+        this.name = name;
+        this.passBid = false;
+        this.checkable = false;
+    }
+
+    public Player() {
+        this.name = "dummy";
+        this.hand = new Hand();
+    }
+
+    public boolean isCheckable() {
+        return checkable;
+    }
+
+    public void setCheckable(boolean b) {
+        this.checkable = b;
+    }
+
+    public boolean isCheck() {
+        return check;
+    }
+
+    public void setCheck(boolean b) {
+        this.check = b;
+    }
 
     public boolean isPassBid() {
         return passBid;
@@ -19,21 +49,12 @@ public class Player {
         this.passBid = passBid;
     }
 
-    boolean passBid;
-
-    public ArrayList<Card> getHand(){
+    public ArrayList<Card> getHand() {
         return hand.getCards();
     }
 
-
-    public Player(String name) {
-        this.name = name;
-        this.passBid=false;
-    }
-
-    public Player() {
-        this.name = "dummy";
-        this.hand = new Hand();
+    protected void setHand(Hand hand) {
+        this.hand = hand;
     }
 
     public int getCurrentBid() {
@@ -56,17 +77,14 @@ public class Player {
         this.position = position;
     }
 
-    protected void setHand(Hand hand) {
-        this.hand = hand;
-    }
-
     public void addCard(Card c) {
         this.hand.addCard(c);
     }
 
-    public void addWidow(ArrayList<Card> widow){
+    public void addWidow(ArrayList<Card> widow) {
         this.hand.addCards(widow);
     }
+
     public enum Position {
         ONE,
         TWO,

@@ -1,7 +1,6 @@
 package rookCore;
 
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,11 +12,11 @@ import java.util.Map;
  */
 public interface CardHolderInterface {
 
-     void viewCards();
+    void viewCards();
 
-     Card releaseCardOut(int CardIndex);
+    Card releaseCardOut(int CardIndex);
 
-     void addCard(Card card);
+    void addCard(Card card);
 
 
 }

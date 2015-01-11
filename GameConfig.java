@@ -14,8 +14,8 @@ package rookCore;
 public class GameConfig {
 
 
-    private Card.CARD_RANK blueRavenRank;
     int GameConfigError;
+    private Card.CARD_RANK blueRavenRank;
     private boolean includeOnes;
     private boolean includeTwosThruFours;
     private boolean highTrumpOne;
@@ -30,17 +30,7 @@ public class GameConfig {
     private boolean lastTrickWinnerTakesNest;
     private short bonusAllPoints, bonusAllTricks, bonusMostTricks;
     private short winningScore;
-
-    public short getNumberOfRounds() {
-        return numberOfRounds;
-    }
-
-    public void setNumberOfRounds(short numberOfRounds) {
-        this.numberOfRounds = numberOfRounds;
-    }
-
     private short numberOfRounds;
-
 
     public GameConfig() {
         includeOnes = true;
@@ -62,10 +52,7 @@ public class GameConfig {
         winningScore = 300;
 
 
-
-
     }
-
 
     public GameConfig(boolean includeOnes, boolean includeTwosThruFours, boolean highTrumpOne, Card.CARD_COLOR highTrumpOneColor, boolean includeBlueRaven, boolean playBlueRavenAnytime, Card.CARD_RANK blueRavenRank, short minimumBid, String nestName, boolean revealNestAfterBidding, boolean winningBidderLeads, boolean forceTrumpCantFollowSuit, boolean lastTrickWinnerTakesNest, short bonusAllPoints, short bonusAllTricks, short bonusMostTricks, short winningScore) {
         this.GameConfigError = GAME_CONFIG_ERROR_BITS.NO_ERROR.bit;
@@ -95,8 +82,16 @@ public class GameConfig {
 
     }
 
-    public Card.CARD_RANK getBlueRavenRank(){
-    return blueRavenRank;
+    public short getNumberOfRounds() {
+        return numberOfRounds;
+    }
+
+    public void setNumberOfRounds(short numberOfRounds) {
+        this.numberOfRounds = numberOfRounds;
+    }
+
+    public Card.CARD_RANK getBlueRavenRank() {
+        return blueRavenRank;
     }
 
     public boolean isIncludeOnes() {

@@ -27,6 +27,60 @@ public class CommandLineGameController extends GameController implements PlayerC
         super.gameControllerDefault();
     }
 
+    @Override
+    protected void reloadWidow(Player p) {
+        System.out.println(p.getName() + ", please select 5 cards to place back into the Widow:");
+        for (int i = 0; i < 4; i++) {
+            Card c = cardPuller(p);
+            System.out.println("You picked: " + c.toString());
+            super.widow.addCard(c);
+            if (i < 3) System.out.println("Please choose another card.");
+        }
+
+
+    }
+
+    @Override
+    protected void requestTrump(Player p, Card.CARD_COLOR trumpColor) {
+        listCards(p);
+        System.out.println(p.getName() + " please choose trumps: (B)lack (G)reen (R)ed (Y)ellow");
+
+        char trump = 'X';
+        try {
+            trump = is.readLine().charAt(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        switch (trump) {
+            case 'B':
+                trumpColor = Card.CARD_COLOR.BLACK;
+                System.out.println("Trumps is: " + trumpColor.toString());
+                break;
+            case 'G':
+                trumpColor = Card.CARD_COLOR.GREEN;
+                System.out.println("Trumps is: " + trumpColor.toString());
+                break;
+            case 'R':
+                trumpColor = Card.CARD_COLOR.RED;
+                System.out.println("Trumps is: " + trumpColor.toString());
+                break;
+            case 'Y':
+                trumpColor = Card.CARD_COLOR.YELLOW;
+                System.out.println("Trumps is: " + trumpColor.toString());
+                break;
+            default:
+                System.out.println("ERROR: Please enter one of the designated letters. Try again");
+                requestTrump(p, trumpColor);
+                break;
+        }
+    }
+
+
+    @Override
+    protected void postBidUpdate() {
+
+    }
 
     @Override
     protected void notifyGameExit() {
@@ -134,11 +188,10 @@ public class CommandLineGameController extends GameController implements PlayerC
 
         }
 
-
-
         Card.CARD_COLOR playedColor;
         ArrayList<Card> cardsOfTrick = new ArrayList<Card>(4);
         for (Player p : playerList) {
+            System.out.flush();
             cardsOfTrick.add(requestCardPlay(p));
 
             if (p.equals(playerList.get(0))) {
@@ -177,22 +230,9 @@ public class CommandLineGameController extends GameController implements PlayerC
     }
 
     @Override
-    protected void pollBids(ArrayList<Player> tempBidders) {
-        for (int i = 0; i < tempBidders.size(); i++) {
-            if (tempBidders.size() == 1) break;
-            tempBidders.get(i).setCurrentBid(requestBid(tempBidders.get(i)));
-            if (tempBidders.get(i).isPassBid()) {
-                tempBidders.remove(i);
-                i--;
-
-            } else if (tempBidders.get(i).getCurrentBid() == super.tempBid) tempBid += 5;
-
-        }
-
-    }
-
-    @Override
     public int requestBid(Player p) {
+
+
         System.out.print(p.getName() + " Bid (" + super.tempBid + ") or higher. (C)heck or (P)ass  :");
         String input = null;
         try {
@@ -207,8 +247,9 @@ public class CommandLineGameController extends GameController implements PlayerC
 
             return 0;
         } else if (input.equalsIgnoreCase("C")) {
+            p.setCheck(true);
             return 0;
-            //confirm you can check
+
         } else if (Integer.parseInt(input) < super.tempBid) {
             System.out.println("ERROR: You must bit at least " + super.tempBid + " or higher. Bid again.");
             requestBid(p);
@@ -231,6 +272,10 @@ public class CommandLineGameController extends GameController implements PlayerC
     @Override
     public Card requestCardPlay(Player p) {
         System.out.println("Play Card For: " + p.getName());
+        return cardPuller(p);
+    }
+
+    public Card cardPuller(Player p) {
         ArrayList<Card> c = p.getHand();
         int i = 0;
         for (Card card : c) {
@@ -253,6 +298,16 @@ public class CommandLineGameController extends GameController implements PlayerC
 
     @Override
     public void run() {
+
+    }
+
+    public void listCards(Player p) {
+        ArrayList<Card> c = p.getHand();
+        int i = 0;
+        for (Card card : c) {
+            System.out.println(i + ") " + card.toString());
+            i++;
+        }
 
     }
 }
