@@ -33,7 +33,7 @@ public abstract class GameController implements Runnable {
         }
         this.team = new Team[2];
         this.widow = new Widow();
-        gameConfig.setNumberOfRounds((short) deck.getDeckSize());
+        gameConfig.setNumberOfRounds((short) ((deck.getDeckSize() - 5) / 4));
         startGame();
         //TODO: Create game players.
 
@@ -48,6 +48,11 @@ public abstract class GameController implements Runnable {
         for (short i = 0; i < gameConfig.getNumberOfRounds(); i++) {
             playTrick();
         }
+        int widowPoints = 0;
+        for (Card card : widow.cards) {
+            widowPoints += card.cardFace.points();
+        }
+        gameState.getWinningTeam().setRoundScore(gameState.getWinningTeam().getRoundScore() + widowPoints);
         //determine if winning team has gone set or not
         if (gameState.getWinningTeam().getRoundScore() < gameState.currentHighBid) {
             gameState.getWinningTeam().setRoundScore(gameState.getWinningTeam().getRoundScore() - gameState.currentHighBid);
