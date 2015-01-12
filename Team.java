@@ -5,22 +5,31 @@ package rookCore;
  */
 public class Team {
     Player playerOne, playerTwo;
-    private short score;
-
+    private int gameScore;
+    private int roundScore;
 
     public Team(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
-        score = 0;
+        gameScore = 0;
+        roundScore = 0;
 
     }
 
-    public short getScore() {
-        return score;
+    public int getRoundScore() {
+        return roundScore;
     }
 
-    public void setScore(short score) {
-        this.score = score;
+    public void setRoundScore(int roundScore) {
+        this.roundScore = roundScore;
+    }
+
+    public int getGameScore() {
+        return gameScore;
+    }
+
+    public void setGameScore(int gameScore) {
+        this.gameScore = gameScore;
     }
 
     public String getPlayerNames() {

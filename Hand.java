@@ -1,12 +1,7 @@
 package rookCore;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Map;
-import java.util.List;
-
-import static java.util.Collections.*;
 
 /**
  * Created by ashton on 12/31/14.
@@ -47,6 +42,36 @@ public class Hand implements CardHolderInterface {
         d.addAll(cards);
         Collections.sort(d);
 
+    }
+
+    public ArrayList<Card> getCardsOfColor(Card.CARD_COLOR color) {
+        ArrayList<Card> returningCards = new ArrayList<Card>(1);
+        int fromIndex = -1, toIndex = -1;
+        for (int i = 0; i < d.size(); i++) {
+            if (d.get(i).cardColor == Card.CARD_COLOR.ROOK) {
+                returningCards.add(d.get(i));
+            }
+
+            if (d.get(i).cardColor == color) {
+                fromIndex = i;
+                break;
+            }
+
+        }
+        if (fromIndex == -1) {
+            return d;
+        }
+        toIndex = fromIndex;
+        for (int i = fromIndex; i < d.size(); i++) {
+            if (d.get(i).cardColor != color) {
+                toIndex = i - 1;
+                break;
+            }
+            toIndex = i;
+        }
+
+        returningCards.addAll(d.subList(fromIndex, toIndex + 1));
+        return returningCards;
     }
 
 

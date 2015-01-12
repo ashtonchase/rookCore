@@ -57,6 +57,10 @@ public class Player {
         this.hand = hand;
     }
 
+    public ArrayList<Card> getHand(Card.CARD_COLOR color) {
+        return hand.getCardsOfColor(color);
+    }
+
     public int getCurrentBid() {
         return currentBid;
     }

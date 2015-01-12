@@ -5,7 +5,11 @@ import rookCore.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 
 /**
  * Created by ashton on 1/1/15.
@@ -14,32 +18,35 @@ public class CommandLineGameController extends GameController implements PlayerC
     BufferedReader is;
     String[] s;
     //String s = null;
-
-
     public CommandLineGameController() {
-
         super();
         is = new BufferedReader(new InputStreamReader(System.in));
     }
 
     public void startGame() {
-
         super.gameControllerDefault();
+    }
+
+    @Override
+    protected void postRoundResults() {
+        System.out.println("========= ROUND RESULTS ==========");
+        System.out.println("Team1:" + team[0].getRoundScore() + " Points----Team2:" + team[1].getRoundScore() + " Points");
+        System.out.println("========= GAME RESULTS ==========");
+        System.out.println("Team1:" + team[0].getGameScore() + " Points----Team2:" + team[1].getGameScore() + " Points");
     }
 
     @Override
     protected void reloadWidow(Player p) {
         System.out.println(p.getName() + ", please select 5 cards to place back into the Widow:");
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             Card c = cardPuller(p);
             System.out.println("You picked: " + c.toString());
             super.widow.addCard(c);
-            if (i < 3) System.out.println("Please choose another card.");
+            if (i < 4) System.out.println("Please choose another card.");
         }
 
 
     }
-
     @Override
     protected void requestTrump(Player p, Card.CARD_COLOR trumpColor) {
         listCards(p);
@@ -75,18 +82,13 @@ public class CommandLineGameController extends GameController implements PlayerC
                 break;
         }
     }
-
-
     @Override
     protected void postBidUpdate() {
-
     }
-
     @Override
     protected void notifyGameExit() {
         System.out.println("------GAME OVER-------");
     }
-
     @Override
     protected void assignTeams() {
 
@@ -132,27 +134,19 @@ public class CommandLineGameController extends GameController implements PlayerC
         Collections.swap(super.players, playerTwo, 2);
 
     }
-
     @Override
     protected void setGameConfig() {
-
     }
-
     @Override
     protected void storeGameState() {
-
     }
-
     @Override
     protected void storeGameConfig() {
-
     }
-
     @Override
     protected boolean createPlayerConnection(Player p) {
         return false;
     }
-
     @Override
     protected void getPlayerNames() {
         if (true) {
@@ -174,7 +168,6 @@ public class CommandLineGameController extends GameController implements PlayerC
             }
         } else return;
     }
-
     @Override
     protected void playTrick() {
         LinkedList<Player> playerList = new LinkedList<Player>();
@@ -188,47 +181,101 @@ public class CommandLineGameController extends GameController implements PlayerC
 
         }
 
-        Card.CARD_COLOR playedColor;
+        Card.CARD_COLOR playedColor = Card.CARD_COLOR.ROOK;
         ArrayList<Card> cardsOfTrick = new ArrayList<Card>(4);
         for (Player p : playerList) {
-            System.out.flush();
-            cardsOfTrick.add(requestCardPlay(p));
 
             if (p.equals(playerList.get(0))) {
-            }
+                cardsOfTrick.add(requestCardPlay(p));
+                playedColor = cardsOfTrick.get(0).getCardColor();
+            } else cardsOfTrick.add(requestCardPlay(p, playedColor));
             postCard(p, cardsOfTrick.get(cardsOfTrick.size() - 1));
-            //TODO:determine winner and post points;
-        }
 
+        }
+        //Determine trick winner;
+        int winningCardIndex = determineWinningCard(playedColor, gameState.getTrumps(), cardsOfTrick);
+        gameState.setLeadNextTrick(playerList.get(winningCardIndex));
+        System.out.println(gameState.getLeadNextTrick().getName() + " won the trick with " + cardsOfTrick.get(winningCardIndex).toString());
+        for (Team t : team) {
+            if (t.contains(gameState.getLeadNextTrick())) {
+                t.setRoundScore(getTrickPoints(cardsOfTrick));
+                break;
+            }
+        }
     }
 
+    private int determineWinningCard(Card.CARD_COLOR playedColor, Card.CARD_COLOR trumps, ArrayList<Card> cardsOfTrick) {
+      /*
+    If you playing with the high 1, it wins.
+    Else if you playing with the high rook, it wins.
+    Else if the card if the card is the highest trump, it wins,
+    Else,if the card is the highest leading card, it wins.
+    */
+        ArrayList<Card> cAr = new ArrayList<Card>(4);
+        cAr.addAll(cardsOfTrick);
+        for (Card card : cardsOfTrick) {
+            if (gameConfig.isHighTrumpOne() == true) {
+                if ((card.getCardColor() == gameConfig.getHighTrumpOneColor() && (card.getCardFace() == Card.CARD_FACE.ONE))) {
+                    return cardsOfTrick.indexOf(card);
+                }
+            }
+        }
+        if (gameConfig.getBlueRavenRank() == Card.CARD_RANK.HIGHROOK) {
+            for (Card card : cardsOfTrick) {
+                if (card.getCardColor() == Card.CARD_COLOR.ROOK) {
+                    return cardsOfTrick.indexOf(card);
+                }
+            }
+        }
+        boolean trumpPlayed = false;
+        for (Card card : cardsOfTrick) {
+            if (card.getCardColor() == trumps) {
+                trumpPlayed = true;
+
+            } else if (trumpPlayed) {
+                if (cAr.contains(card)) cAr.remove(card);
+            }
+        }
+        if (trumpPlayed) {
+            //if there is only one trump, it takes the hand
+            do {
+                if (cAr.size() == 1) return cardsOfTrick.indexOf(cAr.get(0));
+                if (cAr.get(0).compareTo(cAr.get(1)) == 1) {
+                    cAr.remove(1);
+                } else cAr.remove(0);
+            } while (true);
+        }
+        for (Card card : cardsOfTrick) {
+            if (card.getCardColor() != playedColor) cAr.remove(card);
+            do {
+                if (cAr.size() == 1) return cardsOfTrick.indexOf(cAr.get(0));
+                if (cAr.get(0).compareTo(cAr.get(1)) == 1) {
+                    cAr.remove(1);
+                } else cAr.remove(0);
+            } while (true);
+        }
+        return -1;
+    }
     @Override
     protected void postCard(Player p, Card c) {
         //update display of played card.
         System.out.println(p.getName() + " played " + c.toString());
     }
-
     @Override
     public void SetPlayerNames(String[] names) {
         this.s = names;
-
-
     }
-
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
-
     @Override
     public void SendUpdatedGameState(Player p, GameState currentState) {
 
     }
-
     @Override
     public void AttachInterface() {
 
     }
-
     @Override
     public int requestBid(Player p) {
 
@@ -258,23 +305,25 @@ public class CommandLineGameController extends GameController implements PlayerC
         return Integer.parseInt(input);
 
     }
-
     @Override
     public boolean playerSignalledPass(Player p) {
         return false;
     }
-
     @Override
     public boolean playedSignalledCheck(Player p) {
         return false;
     }
-
     @Override
     public Card requestCardPlay(Player p) {
         System.out.println("Play Card For: " + p.getName());
         return cardPuller(p);
     }
 
+    @Override
+    public Card requestCardPlay(Player p, Card.CARD_COLOR color) {
+        System.out.println("Play Card For: " + p.getName());
+        return cardPuller(p, color);
+    }
     public Card cardPuller(Player p) {
         ArrayList<Card> c = p.getHand();
         int i = 0;
@@ -296,11 +345,32 @@ public class CommandLineGameController extends GameController implements PlayerC
         return c.remove(pickedCardIndex);
     }
 
+    public Card cardPuller(Player p, Card.CARD_COLOR cardColor) {
+        ArrayList<Card> c = p.getHand(cardColor);
+        int i = 0;
+
+        for (Card card : c) {
+            System.out.println(i + ") " + card.toString());
+            i++;
+        }
+
+
+        int pickedCardIndex = 0;
+        try {
+            pickedCardIndex = Integer.parseInt(is.readLine());
+        } catch (IOException ioe) {
+            System.out.println("IO Error trying to read card");
+            System.exit(1);
+        }
+
+        ArrayList<Card> fullHand = p.getHand();
+        return fullHand.remove(fullHand.indexOf(c.get(pickedCardIndex)));
+
+    }
     @Override
     public void run() {
 
     }
-
     public void listCards(Player p) {
         ArrayList<Card> c = p.getHand();
         int i = 0;

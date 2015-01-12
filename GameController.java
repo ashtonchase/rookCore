@@ -1,7 +1,6 @@
 package rookCore;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 /**
  * Created by ashton on 12/31/14.
@@ -15,6 +14,14 @@ public abstract class GameController implements Runnable {
     public Team[] team;
     public Widow widow;
     protected int tempBid;
+
+    protected int getTrickPoints(ArrayList<Card> playedCards) {
+        int trickPoints = 0;
+        for (Card card : playedCards) {
+            trickPoints += card.cardFace.points();
+        }
+        return trickPoints;
+    }
 
     protected void gameControllerDefault() {
         this.gameConfig = new GameConfig();
@@ -33,10 +40,24 @@ public abstract class GameController implements Runnable {
 
     }
 
+    private void playRound() {
+        int bid = 0;
+        int teamOneRoundPoints = 0;
+        int teamTwoRoundPoints = 0;
+        initiateBidding();
+        for (short i = 0; i < gameConfig.getNumberOfRounds(); i++) {
+            playTrick();
+        }
+        //determine if winning team has gone set or not
+        if (gameState.getWinningTeam().getRoundScore() < gameState.currentHighBid) {
+            gameState.getWinningTeam().setRoundScore(gameState.getWinningTeam().getRoundScore() - gameState.currentHighBid);
+        }
+    }
+
     private void startGame() {
         // ThreadPooledServer server = new ThreadPooledServer(5066);
         //new Thread(server).start();
-
+        int roundCount = 0;
 
         for (int i = 0; i < players.size(); i++) {
 
@@ -49,24 +70,19 @@ public abstract class GameController implements Runnable {
         System.out.flush();
         dealCards();
         do {//play hands until either team has enough points to win.
-
-            initiateBidding();
-            System.out.flush();
-            for (short i = 0; i < gameConfig.getNumberOfRounds(); i++) {
-                playTrick();
+            playRound();
+            gameState.setStartingBidder(players.get(roundCount % 4));
+            for (Team t : team) {
+                t.setGameScore(t.getRoundScore());
             }
-
-
+            postRoundResults();
         }
-        while ((team[0].getScore() <= gameConfig.getWinningScore()) && (team[1].getScore() <= gameConfig.getWinningScore()));
-        if (team[0].getScore() > team[1].getScore())
-            gameState.setWinningTeam(team[0]);
-        else gameState.setWinningTeam(team[1]);
-
-        System.out.println("Stopping Server");
-        // server.stop();
+        while ((team[0].getGameScore() <= gameConfig.getWinningScore()) && (team[1].getGameScore() <= gameConfig.getWinningScore()));
+        System.out.println("GAME_OVER");
         notifyGameExit();
     }
+
+    protected abstract void postRoundResults();
 
     private void initiateBidding() {
         int index = players.indexOf(gameState.startingBidder);
@@ -91,7 +107,10 @@ public abstract class GameController implements Runnable {
         System.out.println(gameState.getWinningBidder().getName() + " Won the bid!");
         requestTrump(gameState.getWinningBidder(), gameState.trumps);
         reloadWidow(gameState.getWinningBidder());
-
+        if (team[0].contains(gameState.getWinningBidder())) {
+            gameState.setWinningTeam(team[0]);
+        } else gameState.setWinningTeam(team[1]);
+        System.out.println("=========BIDDING OVER=========");
 
     }
 
@@ -115,6 +134,7 @@ public abstract class GameController implements Runnable {
                 //    tempBidders.get(i+1).setCheckable(false);
             } else if (tempBidders.get(i).getCurrentBid() >= tempBid)
                 tempBid = tempBidders.get(i).getCurrentBid() + 5;
+            gameState.currentHighBid = tempBid;
 
 
         }
@@ -158,4 +178,6 @@ public abstract class GameController implements Runnable {
     protected abstract void postCard(Player p, Card c);
 
     public abstract void SetPlayerNames(String[] names);
+
+    public abstract Card requestCardPlay(Player p, Card.CARD_COLOR color);
 }
