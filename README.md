@@ -16,6 +16,7 @@ You will need Java installed on your system to run the program.
 Within the /GameTester/ folder, you will need to compile and run Main.java
 
 `javac -cp ./  -cp ./GameTester/ ./*.java ./GameTester/*.java  -d ./`
+
 `java rookCore.GameTester.Main`
 
 
